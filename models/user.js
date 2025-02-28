@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 
 
-const foodSchema = new mongoose.Schema ({
-  name: {
+const foodSchema = new mongoose.Schema({
+  foodName: {
     type: String,
-    required: true,
-  },
+  }
 })
 
 
@@ -18,7 +17,7 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  pantry: [foodSchema],
+  foods: [foodSchema],
 });
 
 const User = mongoose.model('User', userSchema);

@@ -11,7 +11,8 @@ const isSignedIn = require('./middleware/is-signed-in.js');
 const passUserToView = require('./middleware/pass-user-to-view.js');
 
 const authController = require('./controllers/auth.js');
-const foodsController = require('./controllers/food.js');
+const foodsController = require('./controllers/foods.js');
+const usersController = require('./controllers/users.js');
 
 
 const port = process.env.PORT ? process.env.PORT : '3000';
@@ -36,22 +37,19 @@ app.use(
 app.use(passUserToView);
 
 app.get('/', (req, res) => {
-  res.render('index.ejs', {
-    user: req.session.user,
-  });
-});
-
-app.get('/vip-lounge', (req, res) => {
   if (req.session.user) {
-    res.send(`Welcome to the party ${req.session.user.username}.`);
+    res.redirect(`/users/${req.session.user._id}/foods`);
   } else {
-    res.send('Sorry, no guests allowed.');
-  }
-});
+    res.render('index.ejs');
+    }
+  });
+
 
 app.use('/auth', authController);
 app.use(isSignedIn);
 app.use('/users/:userId/foods', foodsController);
+app.use('/users', usersController);
+
 
 
 app.listen(port, () => {
